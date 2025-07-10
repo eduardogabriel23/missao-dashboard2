@@ -1,21 +1,27 @@
-import whisper
 import gradio as gr
+import requests
 
-model = whisper.load_model("small")
+API_URL = "https://whisper.gooey.ai/api/v1/transcribe/"
+API_KEY = "demo"  # Você pode registrar sua própria chave gratuita em https://whisper.gooey.ai
 
-def transcribe(audio):
+def transcribe_with_whisper(audio):
     if audio is None:
         return "Nenhum arquivo enviado."
-    result = model.transcribe(audio.name, language="Portuguese")
-    return result["text"]
+    
+    files = {'file': open(audio, 'rb')}
+    headers = {'Authorization': f'Bearer {API_KEY}'}
+    data = {'diarize': 'false'}
 
-iface = gr.Interface(
-    fn=transcribe,
+    response = requests.post(API_URL, headers=headers, files=files, data=data)
+    if response.ok:
+        return response.json()["text"]
+    else:
+        return f"Erro: {response.text}"
+
+gr.Interface(
+    fn=transcribe_with_whisper,
     inputs=gr.Audio(source="upload", type="filepath"),
     outputs="text",
-    title="Transcritor – Eduardo, Jane e Luana",
-    description="Suba vídeo ou áudio em português e receba transcrição exata."
-)
-
-if __name__ == "__main__":
-    iface.launch()
+    title="Transcritor Inteligente",
+    description="WebApp da equipe Eduardo, Jane e Luana. Envie um vídeo ou áudio em português e receba a transcrição exata."
+).launch()
