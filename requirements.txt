@@ -1,0 +1,3 @@
+whisper
+gradio
+ffmpeg-python
