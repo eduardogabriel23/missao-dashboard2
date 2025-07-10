@@ -1,0 +1,7 @@
+git clone https://huggingface.co/spaces/SEU-USER/transcritor-whisper
+cd transcritor-whisper
+
+git add app.py requirements.txt README.md
+git commit -m "Adiciona transcritor com Whisper e Gradio"
+git push
+
