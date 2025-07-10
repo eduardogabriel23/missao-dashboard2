@@ -1,3 +1,2 @@
-whisper
 gradio
-ffmpeg-python
+requests
